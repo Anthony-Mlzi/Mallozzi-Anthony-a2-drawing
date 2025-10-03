@@ -43,6 +43,12 @@ namespace MohawkGame2D
         float circleX;
         float circleY;
 
+        System.Random rng = new System.Random();
+
+        int[] arrayOne = new int[15];
+        int[] arrayTwo = new int[15];
+
+        float y;
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -201,8 +207,7 @@ namespace MohawkGame2D
             alpha += Time.DeltaTime * 0.3f;
             ColorF colorChange = new ColorF(red, blue, green, alpha);
 
-            Draw.LineSize = 3;
-            Draw.LineColor = Color.White;
+            Draw.LineSize = 0;
             Draw.FillColor = colorChange;
             Draw.Circle(circleX - playerX, circleY - playerY, alpha * 50);
 
@@ -244,6 +249,17 @@ namespace MohawkGame2D
             Draw.LineSize = 0;
             Draw.FillColor = sheet;
             Draw.Rectangle(70 - playerX, 400 - playerY, 250, 300);
+        }
+
+        public void particles()
+        {
+            for (int i = 0; i < 1; i++)
+            {
+                arrayOne[i] = rng.Next(150, 250);
+                arrayTwo[i] = rng.Next(150, 250);
+                Draw.LineSize = 3;
+                Draw.Circle(arrayOne[i] - playerX, arrayTwo[i] - playerY, 10);
+            }
         }
         ///     Update runs every frame.
         /// </summary>
@@ -326,6 +342,7 @@ namespace MohawkGame2D
                 circleY = 45;
                 runelight();
                 ritualCircleOne();
+                particles();
             }
 
             if (bVisibility == true)
@@ -334,6 +351,7 @@ namespace MohawkGame2D
                 circleY = 300;
                 runelight();
                 ritualCircleTwo();
+                particles();
             }
 
             if (cVisibility == true)
@@ -342,6 +360,7 @@ namespace MohawkGame2D
                 circleY = 300;
                 runelight();
                 ritualCircleThree();
+                particles();
             }
         }
     }
