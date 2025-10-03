@@ -250,6 +250,8 @@ namespace MohawkGame2D
             Draw.FillColor = sheet;
             Draw.Rectangle(70 - playerX, 400 - playerY, 250, 300);
         }
+        
+        //add particles
 
         public void particles()
         {
