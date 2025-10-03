@@ -2,6 +2,7 @@
 using System;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
 
 // The namespace your code is in.
 namespace MohawkGame2D
@@ -16,9 +17,9 @@ namespace MohawkGame2D
         ColorF bgColor = new ColorF(0.3f, 0.1f, 0.1f);
         ColorF symColor = new ColorF(0.8f, 0.2f, 0.1f);
         ColorF shelfColor = new ColorF(0.5f, 0.3f, 0.2f);
-        ColorF runeColorA = new ColorF(1.0f, 0.0f, 0.9f);
-        ColorF runeColorB = new ColorF(0.0f, 0.9f, 1.0f);
-        ColorF runeColorC = new ColorF(0.25f, 1.0f, 0.0f);
+        ColorF runeColorA = new ColorF(1.0f, 0.0f, 0.9f, 1.0f);
+        ColorF runeColorB = new ColorF(0.0f, 0.9f, 1.0f, 1.0f);
+        ColorF runeColorC = new ColorF(0.25f, 1.0f, 0.0f, 1.0f);
 
         float playerY;
         float playerX;
@@ -31,6 +32,17 @@ namespace MohawkGame2D
         bool aVisibility = false;
         bool bVisibility = false;
         bool cVisibility = false;
+
+        float colorChange;
+        float timeDelt;
+        float alpha;
+        float red = 1.0f;
+        float blue = 0.4f;
+        float green = 0.0f;
+
+        float circleX;
+        float circleY;
+
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -172,11 +184,71 @@ namespace MohawkGame2D
 
         }
 
+        //Light function
+
+        public void lightA()
+        {
+            Draw.LineSize = 0;
+            Draw.FillColor = runeColorA;
+            Draw.Circle(200, 200, 200);
+        }
+
+        //runelight function
+
+        public void runelight()
+        {
+
+            alpha += Time.DeltaTime * 0.3f;
+            ColorF colorChange = new ColorF(red, blue, green, alpha);
+
+            Draw.LineSize = 3;
+            Draw.LineColor = Color.White;
+            Draw.FillColor = colorChange;
+            Draw.Circle(circleX - playerX, circleY - playerY, alpha * 50);
+
+            if (alpha > 0.7f)
+            {
+                alpha -= alpha;
+            }
+        }
+
+        //shade
+
+        public void shade()
+        {
+            ColorF shade = new ColorF(0.0f, 0.0f, 0.0f, 0.3f);
+            Draw.LineSize = 0;
+            Draw.FillColor = shade;
+            Draw.Rectangle(-200 - playerX, -100 - playerY, 800, 125 - playerY);
+            Draw.Rectangle(-200 - playerX, -100 - playerY, 800, 90 - playerY);
+            Draw.Rectangle(-200 - playerX, -100 - playerY, 800, 45 - playerY);
+        }
+
+        //centerlight
+
+        public void centerlight()
+        {
+            ColorF shine = new ColorF(1.0f, 4.0f, 0.0f, 0.1f);
+            Draw.LineSize = 0.0f;
+            Draw.FillColor = shine;
+            Draw.Circle(200 - playerX, 200 - playerY, 125);
+            Draw.Circle(200 - playerX, 200 - playerY, 90);
+            Draw.Circle(200 - playerX, 200 - playerY, 50);
+        }
+
+        //paper
+
+        public void paper()
+        {
+            ColorF sheet = new ColorF(1.0f, 0.9f, 0.6f);
+            Draw.LineSize = 0;
+            Draw.FillColor = sheet;
+            Draw.Rectangle(70 - playerX, 400 - playerY, 250, 300);
+        }
         ///     Update runs every frame.
         /// </summary>
         public void Update()
         {
-            
             Window.ClearBackground(bgColor);
 
             //declare and initialize keyboard inputs
@@ -188,6 +260,8 @@ namespace MohawkGame2D
             bool keyInputC = Input.IsKeyboardKeyDown(KeyboardInput.C);
 
             bool[] keyInputArray = { keyInputA, keyInputB, keyInputC };
+
+            float seconds = Time.SecondsElapsed;
 
             //declare player mouse position
 
@@ -209,9 +283,15 @@ namespace MohawkGame2D
 
             symbolTriangle();
 
+            paper();
+
             letterA();
             letterB();
             letterC();
+
+            centerlight();
+
+            shade();
 
             //set keys to symbol appearances
 
@@ -220,6 +300,7 @@ namespace MohawkGame2D
                 aVisibility = true;
                 bVisibility = false;
                 cVisibility = false;
+
                 Console.WriteLine("ritual A selected");
             }
             else if (keyInputArray[1] == true)
@@ -227,6 +308,7 @@ namespace MohawkGame2D
                 bVisibility = true;
                 aVisibility = false;
                 cVisibility = false;
+
                 Console.WriteLine("ritual B selected");
             }
             else if (keyInputArray[2] == true)
@@ -234,25 +316,31 @@ namespace MohawkGame2D
                 cVisibility = true;
                 aVisibility = false;
                 bVisibility = false;
-                Console.WriteLine("ritual C selected");
-            }
-            else if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
-            {
 
+                Console.WriteLine("ritual C selected");
             }
 
             if (aVisibility == true)
             {
+                circleX = 200;
+                circleY = 45;
+                runelight();
                 ritualCircleOne();
             }
 
             if (bVisibility == true)
             {
+                circleX = 320;
+                circleY = 300;
+                runelight();
                 ritualCircleTwo();
             }
 
             if (cVisibility == true)
             {
+                circleX = 80;
+                circleY = 300;
+                runelight();
                 ritualCircleThree();
             }
         }
