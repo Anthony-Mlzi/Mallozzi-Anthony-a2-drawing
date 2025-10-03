@@ -12,3 +12,9 @@ To have the player interact within this space, I could assign keyboard inputs to
 ## Loops and Arrays
 The gaps in the background that make the desk look like a desk can be created using a simple for loop, however the assignment requires that the code contain two loops and two arrays.  
 The challenge here is finding out where exactly I can place use loops and arrays, as the assignment should be achieveable without.
+
+## drawings
+Any environment designer will tell you that to fill a space, you'll need lots of assets, props fill the space, give rooms personality and help the environment feel more real. However, this is not a 3d space, and asset placement is more tricky, so I will fill the scene with lighting to give a more believeable space. By having a shade effect at the top of the screen and a glow in the center of the symbol, it gives the environment a sort of depth.
+
+## animations
+To have the scene give more of a "alive" feeling, I've added a small growing circle underneath each rune as it appears using DeltaTime, almost giving the appearance of a UI selection marker.
