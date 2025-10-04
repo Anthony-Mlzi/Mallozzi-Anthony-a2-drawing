@@ -18,3 +18,6 @@ Any environment designer will tell you that to fill a space, you'll need lots of
 
 ## animations
 To have the scene give more of a "alive" feeling, I've added a small growing circle underneath each rune as it appears using DeltaTime, almost giving the appearance of a UI selection marker.
+
+## User Instructions
+Use the mouse to move around the window and get your bearings, the A, B and C keys correspond to the drawing animations.
