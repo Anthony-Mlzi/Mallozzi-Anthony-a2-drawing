@@ -16,7 +16,6 @@ namespace MohawkGame2D
 
         ColorF bgColor = new ColorF(0.3f, 0.1f, 0.1f);
         ColorF symColor = new ColorF(0.8f, 0.2f, 0.1f);
-        ColorF shelfColor = new ColorF(0.5f, 0.3f, 0.2f);
         ColorF runeColorA = new ColorF(1.0f, 0.0f, 0.9f, 1.0f);
         ColorF runeColorB = new ColorF(0.0f, 0.9f, 1.0f, 1.0f);
         ColorF runeColorC = new ColorF(0.25f, 1.0f, 0.0f, 1.0f);
@@ -27,14 +26,10 @@ namespace MohawkGame2D
         float gapsY1;
         float gapsY2;
 
-        float rectanglePosition;
-
         bool aVisibility = false;
         bool bVisibility = false;
         bool cVisibility = false;
 
-        float colorChange;
-        float timeDelt;
         float alpha;
         float red = 1.0f;
         float blue = 0.4f;
@@ -48,7 +43,6 @@ namespace MohawkGame2D
         int[] arrayOne = new int[15];
         int[] arrayTwo = new int[15];
 
-        float y;
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -57,20 +51,24 @@ namespace MohawkGame2D
         {
             Window.SetTitle("drawing");
             Window.SetSize(400, 400);
-            Window.TargetFPS = 60;
+            Window.TargetFPS = 30;
         }
 
         //Backgound Gaps function
-
         public void bgGapsFunc()
         {
-            Draw.LineSize = 4;
-            Draw.LineColor = Color.Black;
-            Draw.Line(0, gapsY1, 500 - 50, gapsY2);
+            for (float i = 0; i < 16; i++)
+            {
+                gapsY2 = (i * 50.0f - 50.0f) - playerY;
+                gapsY1 = (i * 50.0f - 50.0f) - playerY;
+
+                Draw.LineSize = 4;
+                Draw.LineColor = Color.Black;
+                Draw.Line(0, gapsY1, 500.0f - 50.0f, gapsY2);
+            }
         }
 
         //triangle symbol function
-
         public void symbolTriangle()
         {
             Draw.LineSize = 15;
@@ -85,7 +83,6 @@ namespace MohawkGame2D
         }
 
         //circle symbol function
-
         public void symbolCircle()
         {
             Draw.LineSize = 15;
@@ -99,15 +96,7 @@ namespace MohawkGame2D
             Draw.Circle(200 - playerX, 200 - playerY, 150);
         }
 
-        //shelf function
-
-        public void bottomItems()
-        {
-            Draw.LineSize = 5;
-            Draw.LineColor = Color.Black;
-            Draw.FillColor = shelfColor;
-            Draw.Rectangle(0, rectanglePosition, 400, 100);
-        }
+        //player keyboard input functions
         public void letterA()
         {
             Draw.LineSize = 5;
@@ -136,7 +125,6 @@ namespace MohawkGame2D
         }
 
         //symbol A function
-
         public void ritualCircleOne()
         {
             Draw.LineSize = 12.0f;
@@ -152,7 +140,6 @@ namespace MohawkGame2D
         }
 
         //symbol B function
-
         public void ritualCircleTwo()
         {
             Draw.LineSize = 12.0f;
@@ -169,7 +156,6 @@ namespace MohawkGame2D
         }
 
         //symbol C function
-
         public void ritualCircleThree()
         {
             Draw.LineSize = 12.0f;
@@ -191,7 +177,6 @@ namespace MohawkGame2D
         }
 
         //Light function
-
         public void lightA()
         {
             Draw.LineSize = 0;
@@ -200,7 +185,6 @@ namespace MohawkGame2D
         }
 
         //runelight function
-
         public void runelight()
         {
 
@@ -218,7 +202,6 @@ namespace MohawkGame2D
         }
 
         //shade
-
         public void shade()
         {
             ColorF shade = new ColorF(0.0f, 0.0f, 0.0f, 0.3f);
@@ -230,7 +213,6 @@ namespace MohawkGame2D
         }
 
         //centerlight
-
         public void centerlight()
         {
             ColorF shine = new ColorF(1.0f, 4.0f, 0.0f, 0.1f);
@@ -242,7 +224,6 @@ namespace MohawkGame2D
         }
 
         //paper
-
         public void paper()
         {
             ColorF sheet = new ColorF(1.0f, 0.9f, 0.6f);
@@ -252,10 +233,9 @@ namespace MohawkGame2D
         }
         
         //add particles
-
         public void particles()
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 arrayOne[i] = rng.Next(150, 250);
                 arrayTwo[i] = rng.Next(150, 250);
@@ -263,13 +243,14 @@ namespace MohawkGame2D
                 Draw.Circle(arrayOne[i] - playerX, arrayTwo[i] - playerY, 10);
             }
         }
+
         ///     Update runs every frame.
         /// </summary>
         public void Update()
         {
             Window.ClearBackground(bgColor);
 
-            //declare and initialize keyboard inputs
+            //declare and initialize keyboard inputs and mouse position
 
             bool keyInputA = Input.IsKeyboardKeyDown(KeyboardInput.A);
 
@@ -279,23 +260,12 @@ namespace MohawkGame2D
 
             bool[] keyInputArray = { keyInputA, keyInputB, keyInputC };
 
-            float seconds = Time.SecondsElapsed;
-
-            //declare player mouse position
-
             playerY = Input.GetMouseY() * 0.4f - 50;
             playerX = Input.GetMouseX() * 0.4f - 50;
 
-            //creat backround gaps using loop and function
+            //place Assets
 
-            for (float i = 0; i < 16; i++)
-            {
-                gapsY2 = (i * 50 - 50) - playerY;
-                gapsY1 = (i * 50 - 50) - playerY;
-                bgGapsFunc();
-            }
-
-            //place shapes
+            bgGapsFunc();
 
             symbolCircle();
 
